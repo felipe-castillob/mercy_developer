@@ -20,4 +20,8 @@ public partial class Cliente
     public string TelefonoCliente { get; set; } = null!;
 
     public DateTime FechaInscripcionCliente { get; set; }
+
+    public int Estado { get; set; }
+
+    public virtual ICollection<Recepcionequipo> Recepcionequipos { get; set; } = new List<Recepcionequipo>();
 }
