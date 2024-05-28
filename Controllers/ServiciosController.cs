@@ -56,9 +56,9 @@ namespace mercy_developer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdServicio,NombreServicio,PrecioServicio,Sku,UsuarioId")] Servicio servicio)
+        public async Task<IActionResult> Create([Bind("IdServicio,NombreServicio,PrecioServicio,Sku,Estado,UsuarioId")] Servicio servicio)
         {
-            if (ModelState.IsValid)
+            if (servicio.NombreServicio != null && servicio.IdServicio != null)
             {
                 _context.Add(servicio);
                 await _context.SaveChangesAsync();
@@ -90,14 +90,14 @@ namespace mercy_developer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdServicio,NombreServicio,PrecioServicio,Sku,UsuarioId")] Servicio servicio)
+        public async Task<IActionResult> Edit(int id, [Bind("IdServicio,NombreServicio,PrecioServicio,Sku,Estado,UsuarioId")] Servicio servicio)
         {
             if (id != servicio.IdServicio)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (servicio.IdServicio != null)
             {
                 try
                 {
