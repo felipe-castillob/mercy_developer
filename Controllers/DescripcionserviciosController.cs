@@ -58,7 +58,7 @@ namespace mercy_developer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,ServicioId")] Descripcionservicio descripcionservicio)
         {
-            if (ModelState.IsValid)
+            if (descripcionservicio.Id != null)
             {
                 _context.Add(descripcionservicio);
                 await _context.SaveChangesAsync();
@@ -97,7 +97,7 @@ namespace mercy_developer.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (descripcionservicio.Id != null)
             {
                 try
                 {
