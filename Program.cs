@@ -1,5 +1,9 @@
 using mercy_developer.Models;
 using Microsoft.EntityFrameworkCore;
+using mercy_developer.Servicios.Contrato;
+using mercy_developer.Servicios.Implementacion;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,15 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<MercyDeveloperContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("conexionDb"), Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.32-mariadb")));
+
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/IniciarSesion";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    });
 
 var app = builder.Build();
 
@@ -24,10 +37,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=IniciarSesion}/{id?}");
 
 app.Run();
