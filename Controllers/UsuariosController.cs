@@ -49,14 +49,13 @@ namespace mercy_developer.Controllers
         }
 
         // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Apellido,Correo,Password")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
+                usuario.EncriptarPassword(usuario.Password); // Encripta la contraseña
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -81,8 +80,6 @@ namespace mercy_developer.Controllers
         }
 
         // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,Nombre,Apellido,Correo,Password")] Usuario usuario)
@@ -96,6 +93,12 @@ namespace mercy_developer.Controllers
             {
                 try
                 {
+                    // Encripta la contraseña solo si se ha cambiado
+                    if (!string.IsNullOrEmpty(usuario.Password))
+                    {
+                        usuario.EncriptarPassword(usuario.Password);
+                    }
+
                     _context.Update(usuario);
                     await _context.SaveChangesAsync();
                 }
